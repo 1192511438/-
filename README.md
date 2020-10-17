@@ -1,5 +1,6 @@
 
-本开发使用github上面的接口https://github.com/Binaryify/NeteaseCloudMusicApi，需要先把接口下载完成后才能使用
+本开发使用github上面的接口https://github.com/Binaryify/NeteaseCloudMusicApi
+需要先把接口下载完成后才能使用
 
 
 
