@@ -17,7 +17,7 @@
  </div>
 
    </div>
-   <keep-alive><router-view/></keep-alive>
+   <keep-alive :key="$route.params.id"><router-view/></keep-alive>
    
 
 

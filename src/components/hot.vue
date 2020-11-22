@@ -21,7 +21,7 @@
         <div class="right">
              <div class="t-login">
                  <p class="note s-fc3">登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</p>
-                 <a href="">用户登录</a>
+                 <a @click="dislogin" style="cursor: pointer;">用户登录</a>
              </div>
              <div class="m-t-art">
                <span class="rz-gs"> 入驻歌手</span>
@@ -112,7 +112,8 @@ export default {
     created(){
                 axios.get('/homepage/block/page').then(res=>{
              this.musics=res.data.data.blocks[0].creatives
-            // console.log(this.musics)
+            //console.log(this.musics)
+            //console.log(res)
             // console.log(this.musics[0].creativeId)
         })
           axios.get('/toplist/detail').then(res=>{
@@ -183,6 +184,9 @@ export default {
     methods:{
         playlist(index){
             this.$router.push('/found/playlist/'+this.musics[index].creativeId);
+        },
+        dislogin(){
+            this.$store.commit('getdislogin')
         }
     },
     computed:{

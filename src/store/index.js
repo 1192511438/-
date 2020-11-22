@@ -10,7 +10,8 @@ const store = new vuex.Store({
         name:'',
         imgurl:'',
         playclick:'',
-        author:''
+        author:'',
+        dislogin:true
     },
     mutations:{
         getsongurl(state,param){
@@ -26,7 +27,12 @@ const store = new vuex.Store({
         }
         ,getauthor(state,ccc){
             state.author=ccc
+        },getdislogin(state){
+            state.dislogin=false
+        },getdislogin1(state){
+            state.dislogin=true
         }
+        
     }
 
 })

@@ -8,9 +8,10 @@ Vue.config.productionTip = false
 import  FastClick  from  'fastclick'
 
 FastClick.attach(document.body);
-new Vue({
+ const app=new Vue({
   render: h => h(App),
   router,
   store
 
-}).$mount('#app')
+}).$mount('#app');
+console.log(app)

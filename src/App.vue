@@ -16,6 +16,11 @@ export default {
     top,
     bofang
   },
+  data(){
+    return{
+      a:1
+    }
+  },
   created(){
 
 }
