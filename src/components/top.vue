@@ -10,12 +10,21 @@
              
              <span class="login" @click="activelogin=false">登录</span>
              <button class="creator-center">创作者中心</button>
+
             <div class="search">
               <span class="icon">
               </span>
               <input type="text" placeholder="音乐/视频/电台/用户">
             </div>
-           
+           <div class="user" v-if="cookie">
+             <img :src="userimg" alt="">
+             <div class="myhomeaa">
+                     <span class="bg">我的主页</span>
+                     <span class="bg">我的等级</span>
+                     <span class="bg">退出</span>
+                     
+             </div>
+           </div>
             
     </div>
             <div class="ad-login" :class="{'dis-login':activelogin1}">
@@ -36,8 +45,11 @@
               </div>
                 <div class="center-bt" v-show="!threebianhuan">
                   <div class="flex-input">
-                    <input type="text" placeholder="请输入手机号" v-model="phonenumber" class="login-phone">
-                    <input type="password" name="password" id="psd" v-model="psd" class="login-phone" placeholder="密码">
+                    <div v-if="error">
+                               <p>密码或账号输入错误</p>
+                    </div>
+                    <input type="text" placeholder="请输入手机号" v-model="phonenumber" class="login-phone" :class="{'err':error}">
+                    <input type="password" name="password" id="psd" v-model="psd" class="login-phone" :class="{'err':error}" placeholder="密码" >
                     <div class="lgin-bt">
                       <input type="checkbox" checked="checked" class="j-auto u-auto">
                       <span> <a href="">自动登录</a> </span>
@@ -59,6 +71,10 @@
 <script>
 import axios from "../axios/index";
 export default {
+  created(){
+    this.userimg=localStorage.getItem("userimg")
+    this.userid=localStorage.getItem('userid')
+  },
 methods:{
   bbb(){
 this.$router.push('/found')
@@ -79,10 +95,20 @@ this.$router.push('/found')
       axios.post('/login/cellphone'+
           '?phone='+this.phonenumber+'&password='+this.psd
       ).then(res=>{
-        console.log(res)
-        console.log(this.phonenumber)
+        console.log(res.data)
+         document.cookie=res.data.cookie
+         localStorage.setItem("token", res.data.token);
+        this.userimg=res.data.profile.avatarUrl
+        this.userid=res.data.profile.userId
+        localStorage.setItem("userid", res.data.profile.userId)
+       localStorage.setItem("userimg", res.data.profile.avatarUrl)
+        this.$store.commit('getdislogin1')
       }).catch(()=>{
-        alert('密码错误或者手机号错误')
+        
+        this.error=true
+        setTimeout(()=>{
+          this.error=false
+        },3000)
       })
   }
 
@@ -98,7 +124,11 @@ data(){
          logorres:true,
          phonenumber:'',
          psd:'',
-         threebianhuan:true
+         threebianhuan:true,
+         error:false,
+         showuserimg:false,
+         userimg:'',
+         userid:''
   }
 },
 computed:{
@@ -122,6 +152,13 @@ computed:{
       }
       
       return true;
+    },
+    cookie(){
+      if(window.localStorage.getItem("token")){
+       
+        return true
+      }
+      return false
     }
 }
 }
@@ -344,7 +381,9 @@ i{
   margin-bottom: 5px;
    border: 1px  #cdcdcd solid;
 }
-
+.err{
+  border: 1px solid red;
+}
 .flex-input{
   width: 300px;
   height: 200px;
@@ -378,6 +417,48 @@ i{
   background: url(https://s2.music.126.net/style/web2/img/button2.png?b49265005e38a8363666c36479a08e6f);
   background-position: 0 -387px;
   border: none;
+}
+p{
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #4F4F4F;
+}
+.user{
+  position: absolute;
+  width: 100px;
+  right: 30px;
+  top: 20px;
+  &:hover .myhomeaa{
+    display: block;
+  }
+  img{
+    width: 30px;
+    height: 30px;
+    display: block;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .myhomeaa{
+    display: none;
+    width: 100px;
+    height: 210px;
+    color: #ffffff;
+    font-size :12px ;
+    font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
+    left: -30px;
+    
+      .bg {
+        display: block;
+        width: 100px;
+        height: 20px;
+        background-color: #242424;
+        text-align: center;
+        &:hover{cursor: pointer;
+                background-color: #353535;
+               }
+      }
+  }
 }
 </style>
 
